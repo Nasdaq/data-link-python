@@ -3,7 +3,7 @@ class Message:
         a Nasdaq Data Link code or as a tuple'
     ERROR_AUTHTOKEN_NOT_SUPPORTED = 'The parameter authtoken is no longer supported. \
         For more information please see \
-        https://github.com/Nasdaq/data-link-python/README.md'
+        https://github.com/Nasdaq/data-link-python/blob/main/README.md'
     ERROR_COLUMNS_DATA_NOT_MATCHED = 'The number of columns requested does not match \
         the data returned.'
     ERROR_COLUMN_INDEX_TYPE = 'The column index must be expressed as an integer for %s.'
@@ -30,6 +30,6 @@ class Message:
         https://docs.data.nasdaq.com/docs'
     WARN_PAGE_LIMIT_EXCEEDED = 'To request more pages, please set paginate=True in your \
         nasdaqdatalink.get_table() call. For more information see our documentation: \
-        https://github.com/Nasdaq/data-link-python/FOR_ANALYSTS.md#things-to-note'
+        https://github.com/Nasdaq/data-link-python/blob/main/FOR_ANALYSTS.md#things-to-note'
     WARN_PARAMS_NOT_SUPPORTED = '%s will no longer supported. Please use %s instead'
     LONG_GENERATION_TIME = 'We are generating the zip file now, please wait...'
