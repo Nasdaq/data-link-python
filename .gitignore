@@ -1,0 +1,12 @@
+*.pyc
+*.zip
+
+/.tox/
+/.eggs
+/Nasdaq_Data_Link.egg-info
+/build
+/dist
+/tmp/
+.idea/*
+venv
+/.DS_Store

@@ -1,0 +1,43 @@
+from .operation import Operation
+from nasdaqdatalink.connection import Connection
+from nasdaqdatalink.util import Util
+from nasdaqdatalink.model.paginated_list import PaginatedList
+from nasdaqdatalink.utils.request_type_util import RequestType
+
+
+class ListOperation(Operation):
+
+    @classmethod
+    def all(cls, **options):
+        if 'params' not in options:
+            options['params'] = {}
+        path = Util.constructed_path(cls.list_path(), options['params'])
+        r = Connection.request('get', path, **options)
+        response_data = r.json()
+        Util.convert_to_dates(response_data)
+        resource = cls.create_list_from_response(response_data)
+        return resource
+
+    @classmethod
+    def page(cls, datatable, **options):
+        params = {'id': str(datatable.code)}
+        path = Util.constructed_path(datatable.default_path(), params)
+
+        request_type = RequestType.get_request_type(path, **options)
+
+        updated_options = Util.convert_options(request_type=request_type, **options)
+
+        r = Connection.request(request_type, path, **updated_options)
+
+        response_data = r.json()
+        Util.convert_to_dates(response_data)
+        resource = cls.create_datatable_list_from_response(response_data)
+        return resource
+
+    @classmethod
+    def create_list_from_response(cls, data):
+        return PaginatedList(cls, data[cls.lookup_key()], data['meta'])
+
+    @classmethod
+    def list_path(cls):
+        return cls.lookup_key()

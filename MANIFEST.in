@@ -1,0 +1,4 @@
+include *.md
+include *.rst
+include *.txt
+graft test
