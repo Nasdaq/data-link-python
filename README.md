@@ -1,5 +1,7 @@
 # Nasdaq Data Link Python Client
 
+# Build status here
+
 This is the official documentation for Nasdaq Data Link's Python Package. The package can be used to interact with the latest version of the [Nasdaq Data Link's RESTful API](https://docs.data.nasdaq.com/docs). This package is compatible with python v3.5+.
 
 ## Installation
