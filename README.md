@@ -37,7 +37,10 @@ nasdaqdatalink.ApiConfig.verify_ssl = False
 ```
 
 ### Local API Key file
-Save local key to `$HOME/.nasdaq_data_link_api_key` file
+
+The default configuration file location is `~/.nasdaq/data_link_apikey`.
+
+Save api key locally:
 ```
 import nasdaqdatalink
 nasdaqdatalink.save_key("supersecret")
@@ -45,6 +48,7 @@ print(nasdaqdatalink.ApiConfig.api_key)
 ```
 
 Load the API Key without exposing the key in the script or notebook
+
 ```
 import nasdaqdatalink
 nasdaqdatalink.read_key()
