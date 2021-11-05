@@ -38,29 +38,23 @@ nasdaqdatalink.ApiConfig.verify_ssl = False
 
 ### Local API Key file
 
-The default configuration file location is `~/.nasdaq/data_link_apikey`.
+The default configuration file location is `~/.nasdaq/data_link_apikey`.  The
+client will attempt to load this file if it exists.  Note: if the file exists
+and empty, a ValueError will be thrown.
 
-Save api key locally:
+Save your api key locally:
 ```
 import nasdaqdatalink
 nasdaqdatalink.save_key("supersecret")
 print(nasdaqdatalink.ApiConfig.api_key)
 ```
 
-Load the API Key without exposing the key in the script or notebook
-
-```
-import nasdaqdatalink
-nasdaqdatalink.read_key()
-print(nasdaqdatalink.ApiConfig.api_key)
-```
-
-Set a custom location for the API key file, e.g. store the externally outside a docker container
+Set a custom location for the API key file:
 ```
 import nasdaqdatalink
 nasdaqdatalink.save_key("ourcorporateapikey", filename="/srv/data/somecontainer/.corporatenasdaqdatalinkapikey")
 ```
-and call within the docker container with mount point at `/data`
+Requires an explicit read_key() call with the absolute path:
 ```
 import nasdaqdatalink
 nasdaqdatalink.read_key(filepath="/data/.corporatenasdaqdatalinkapikey")

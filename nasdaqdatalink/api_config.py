@@ -36,6 +36,11 @@ def default_config_filename():
     return os.path.expanduser(config_file)
 
 
+def default_config_file_exists():
+    config_filename = default_config_filename()
+    return os.path.isfile(config_filename)
+
+
 def save_key(apikey, filename=None):
     if filename is None:
         filename = default_config_filename()
