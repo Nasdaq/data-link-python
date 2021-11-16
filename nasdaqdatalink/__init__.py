@@ -15,3 +15,7 @@ from .bulkdownload import bulkdownload
 from .export_table import export_table
 from .get_table import get_table
 from .get_point_in_time import get_point_in_time
+
+
+if api_config.default_config_file_exists():
+    read_key()
