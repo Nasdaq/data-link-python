@@ -1,5 +1,7 @@
 import os
 
+NASDAQ_DATA_LINK_API_KEY = "NASDAQ_DATA_LINK_API_KEY"
+
 
 class ApiConfig:
     api_key = None
@@ -56,7 +58,7 @@ def raise_empty_file(config_filename):
     raise ValueError("File '{:s}' is empty.".format(config_filename))
 
 
-def read_key(filename=None):
+def read_key_from_file(filename=None):
     if filename is None:
         filename = default_config_filename()
 
@@ -70,3 +72,18 @@ def read_key(filename=None):
         raise_empty_file(filename)
 
     ApiConfig.api_key = apikey
+
+
+def api_key_environment_variable_exists():
+    return NASDAQ_DATA_LINK_API_KEY in os.environ
+
+
+def read_key_from_environment_variable():
+    ApiConfig.api_key = os.environ.get(NASDAQ_DATA_LINK_API_KEY)
+
+
+def read_key(filename=None):
+    if api_key_environment_variable_exists():
+        read_key_from_environment_variable()
+    elif default_config_file_exists():
+        read_key_from_file(filename)
