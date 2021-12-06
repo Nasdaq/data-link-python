@@ -4,12 +4,9 @@ This quick guide offers convenient ways to retrieve individual datasets or datat
 
 ## Retrieving Data
 
-Retrieving data can be achieved easily using these methods `nasdaqdatalink.get` for datasets, `nasdaqdatalink.get_table` for datatables and `nasdaqdatalink.get_point_in_time` for point in time data. In all cases we strongly recommend that you set your api key via:
+Retrieving data can be achieved easily using these methods `nasdaqdatalink.get` for datasets, `nasdaqdatalink.get_table` for datatables and `nasdaqdatalink.get_point_in_time` for point in time data.
 
- ```python
-import nasdaqdatalink
-nasdaqdatalink.ApiConfig.api_key = 'tEsTkEy123456789'
-```
+We strongly recommend that you set your api key using [environment variable](README.md#Local-API-Key-Environment-Variable) or [local file options](README.md#Local-API-Key-file).
 
 ### Datasets
 
@@ -43,7 +40,7 @@ The following additional parameters can be specified for a dataset call:
 
 | Option | Explanation | Example | Description |
 |--------|-------------|---------|-------------|
-| api_key | Your access key | `api_key='tEsTkEy123456789'` | Used to identify who you are and provide more access. Only required if not set via `nasdaqdatalink.ApiConfig.api_key=` |
+| api_key | Your access key | `api_key='tEsTkEy123456789'` | Used to identify who you are and provide more access. |
 | \<filter / transformation parameter\> | A parameter which filters or transforms the resulting data | `start_date='2010-01-01` | For a full list see our [api docs](https://docs.data.nasdaq.com/docs) |
 
 For more information on how to use and manipulate the resulting data see the [pandas documentation](http://pandas.pydata.org/).
@@ -168,7 +165,7 @@ The following additional parameters can be specified for a datatable call:
 
 | Option | Explanation | Example | Description |
 |---|---|---|---|
-| api_key | Your access key | `api_key='tEsTkEy123456789'` | Used to identify who you are and provide more access. Only required if not set via `nasdaqdatalink.ApiConfig.api_key=` |
+| api_key | Your access key | `api_key='tEsTkEy123456789'` | Used to identify who you are and provide more access. |
 | \<filter / transformation parameter\> | A parameter which filters or transforms the resulting data | `start_date='2010-01-01'` | For a full list see our [api docs](https://docs.data.nasdaq.com/docs) |
 | paginate | Wether to autoamtically paginate data | `paginate=True` | Will paginate through the first few pages of data automatically and merge them together in a larger output format. |
 
