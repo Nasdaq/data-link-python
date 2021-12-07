@@ -10,3 +10,4 @@
 .idea/*
 venv
 /.DS_Store
+/test/.nasdaq-config

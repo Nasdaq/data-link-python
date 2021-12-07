@@ -36,6 +36,10 @@ By default, SSL verification is enabled. To bypass SSL verification
 nasdaqdatalink.ApiConfig.verify_ssl = False
 ```
 
+### Local API Key Environment Variable
+
+If you wish to store your API as an environment variable, you can do so by setting `NASDAQ_DATA_LINK_API_KEY`.  If set, NASDAQ_DATA_LINK_API_KEY will take precedence over the API Key file mentioned below.
+
 ### Local API Key file
 
 The default configuration file location is `~/.nasdaq/data_link_apikey`.  The
@@ -59,7 +63,6 @@ Requires an explicit read_key() call with the absolute path:
 import nasdaqdatalink
 nasdaqdatalink.read_key(filepath="/data/.corporatenasdaqdatalinkapikey")
 ```
-
 
 ## Retrieving Data
 
@@ -124,7 +127,7 @@ We recommend the following tools for testing any changes:
 
 The following are instructions for running our tests:
 
-1. Make sure a version of python 2.7 or python 3.x is installed locally in your system. To avoid permission issues on OSX we recommend installing the packages from: https://www.python.org/downloads/
+1. Make sure a version of 3.x is installed locally in your system. To avoid permission issues on OSX we recommend installing the packages from: https://www.python.org/downloads/
 2. Install `virtualenv` and `tox` using:
     `pip install tox virtualenv`
 3. Run following command (you may notice slow performance the first time):
