@@ -38,9 +38,11 @@ def default_config_filename():
     return os.path.expanduser(config_file)
 
 
-def default_config_file_exists():
-    config_filename = default_config_filename()
-    return os.path.isfile(config_filename)
+def config_file_exists(filename=None):
+    if filename is None:
+        filename = default_config_filename()
+
+    return os.path.isfile(filename)
 
 
 def save_key(apikey, filename=None):
@@ -85,5 +87,5 @@ def read_key_from_environment_variable():
 def read_key(filename=None):
     if api_key_environment_variable_exists():
         read_key_from_environment_variable()
-    elif default_config_file_exists():
+    elif config_file_exists(filename):
         read_key_from_file(filename)
