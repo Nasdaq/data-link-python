@@ -27,11 +27,8 @@ pip3 install nasdaq-data-link
 | retry_backoff_factor | Determines the amount of time in seconds that should be waited before attempting another retry. Note that this factor is exponential so a `retry_backoff_factor` of 0.5 will cause waits of [0.5, 1, 2, 4, etc]. Only used if `use_retries` is True | 0.5
 | retry_status_codes | A list of HTTP status codes which will trigger a retry to occur. Only used if `use_retries` is True| [429, 500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511]
 
-```python
-import nasdaqdatalink
-nasdaqdatalink.ApiConfig.api_key = 'tEsTkEy123456789'
-```
-By default, SSL verification is enabled. To bypass SSL verification
+By default, SSL verification is enabled. To bypass SSL verification (not recommended), simply:
+
 ```python
 nasdaqdatalink.ApiConfig.verify_ssl = False
 ```
@@ -46,20 +43,12 @@ The default configuration file location is `~/.nasdaq/data_link_apikey`.  The
 client will attempt to load this file if it exists.  Note: if the file exists
 and empty, a ValueError will be thrown.
 
-Save your api key locally:
-```
-import nasdaqdatalink
-nasdaqdatalink.save_key("supersecret")
-print(nasdaqdatalink.ApiConfig.api_key)
-```
+#### Alternative API Key file location
 
-Set a custom location for the API key file:
-```
-import nasdaqdatalink
-nasdaqdatalink.save_key("ourcorporateapikey", filename="/srv/data/somecontainer/.corporatenasdaqdatalinkapikey")
-```
-Requires an explicit read_key() call with the absolute path:
-```
+Since 1.0.0, the `nasdaq-data-link` module will attempt to autoload your API Key. If you prefer to store it in another location, you must
+explicitly call `read_key()` with a custom path.  See below:
+
+```python
 import nasdaqdatalink
 nasdaqdatalink.read_key(filepath="/data/.corporatenasdaqdatalinkapikey")
 ```
@@ -104,7 +93,6 @@ everything.  Useful to see dependency debug info as well.
 data_link_log = logging.getLogger("nasdaqdatalink")
 data_link_log.setLevel(logging.DEBUG)
 ```
-
 
 ### Detailed Usage
 

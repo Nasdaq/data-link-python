@@ -6,16 +6,11 @@ In addition to the Quick methods for retrieving data, some additional commands m
 * Customizing how data is returned more granularly
 * Allowing easier iteration of data
 
-In each of the following sections it is assumed your Nasdaq Data LInk API key has been set via:
-
-```python
-import nasdaqdatalink
-nasdaqdatalink.ApiConfig.api_key = 'tEsTkEy123456789'
-```
-
 ## Retrieving Data
 
 In the following sections, `params={}` represents optional query parameters that can be passed into each call. For more detail on available query parameters please see the [API Documentation](https://docs.data.nasdaq.com/docs).
+
+We strongly recommend that you set your api key using [environment variable](README.md#Local-API-Key-Environment-Variable) or [local file options](README.md#Local-API-Key-file).
 
 ### Dataset
 
