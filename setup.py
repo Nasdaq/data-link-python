@@ -14,11 +14,7 @@ if sys.version_info[:2] < (3, 7):
     pip install nasdaq-data-link
     """)
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
+from setuptools import setup
 with open('LONG_DESCRIPTION.rst') as f:
     LONG_DESCRIPTION = f.read()
 
