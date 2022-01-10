@@ -68,12 +68,12 @@ def read_key_from_file(filename=None):
         raise_empty_file(filename)
 
     with open(filename, 'r') as f:
-        apikey = f.read()
+        api_key = f.read().split(" ")[0]
 
-    if not apikey:
+    if not api_key:
         raise_empty_file(filename)
 
-    ApiConfig.api_key = apikey
+    ApiConfig.api_key = api_key
 
 
 def api_key_environment_variable_exists():
