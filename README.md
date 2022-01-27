@@ -45,7 +45,7 @@ and empty, a ValueError will be thrown.
 
 #### Alternative API Key file location
 
-Since 1.0.0, the `nasdaq-data-link` module will attempt to autoload your API Key. If you prefer to store it in another location, you must
+Since 1.0.1, the `nasdaq-data-link` module will attempt to autoload your API Key. If you prefer to store it in another location, you must
 explicitly call `read_key()` with a custom path.  See below:
 
 ```python
