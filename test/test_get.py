@@ -46,7 +46,9 @@ class GetSingleDatasetTest(unittest.TestCase):
             self.assertEqual(actual_request_headers['x-api-token'], 'api_key_configured')
 
     def test_sets_api_key_using_authtoken_arg(self):
-        get('NSE/OIL', authtoken='api_key')
+        with self.assertWarns(DeprecationWarning):
+            get('NSE/OIL', authtoken='api_key')
+
         self.assertEqual(ApiConfig.api_key, 'api_key')
 
     def test_sets_api_key_using_api_key_arg(self):
@@ -55,9 +57,11 @@ class GetSingleDatasetTest(unittest.TestCase):
 
     @patch.object(Dataset, 'data')
     def test_query_params_are_formed_with_old_arg_names(self, mock_method):
-        get('NSE/OIL', authtoken='authtoken', trim_start='2001-01-01',
-            trim_end='2010-01-01', collapse='annual',
-            transformation='rdiff', rows=4, sort_order='desc')
+        with self.assertWarns(DeprecationWarning):
+            get('NSE/OIL', authtoken='authtoken', trim_start='2001-01-01',
+                trim_end='2010-01-01', collapse='annual',
+                transformation='rdiff', rows=4, sort_order='desc')
+
         self.assertEqual(mock_method.call_count, 1)
         self.assertEqual(mock_method.mock_calls[0],
                          call(handle_column_not_found=True,
@@ -129,10 +133,11 @@ class GetMultipleDatasetsTest(unittest.TestCase):
 
     @patch.object(MergedDataset, 'data')
     def test_query_params_are_formed_with_old_arg_names(self, mock_method):
-        get(['WIKI/AAPL.1', 'WIKI/MSFT.2', 'NSE/OIL'],
-            authtoken='authtoken', trim_start='2001-01-01',
-            trim_end='2010-01-01', collapse='annual',
-            transformation='rdiff', rows=4, sort_order='desc')
+        with self.assertWarns(DeprecationWarning):
+            get(['WIKI/AAPL.1', 'WIKI/MSFT.2', 'NSE/OIL'],
+                authtoken='authtoken', trim_start='2001-01-01',
+                trim_end='2010-01-01', collapse='annual',
+                transformation='rdiff', rows=4, sort_order='desc')
 
         self.assertEqual(mock_method.call_count, 1)
         self.assertEqual(mock_method.mock_calls[0],

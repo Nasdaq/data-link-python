@@ -1,8 +1,4 @@
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
-
+from urllib.parse import urlencode
 from nasdaqdatalink.api_config import ApiConfig
 
 
