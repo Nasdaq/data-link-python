@@ -5,6 +5,7 @@ import json
 import pandas
 import numpy
 import six
+from datetime import datetime
 from nasdaqdatalink.model.data import Data
 from nasdaqdatalink.model.datatable import Datatable
 from nasdaqdatalink.utils.request_type_util import RequestType
@@ -143,10 +144,10 @@ class ListDatatableDataTest(unittest.TestCase):
         datatable = Datatable('ZACKS/FC')
         results = Data.page(datatable, params={})
         df = results.to_pandas()
-        self.assertIsInstance(df['per_end_date'][0], pandas.datetime)
-        self.assertIsInstance(df['per_end_date'][1], pandas.datetime)
-        self.assertIsInstance(df['per_end_date'][2], pandas.datetime)
-        self.assertIsInstance(df['per_end_date'][3], pandas.datetime)
+        self.assertIsInstance(df['per_end_date'][0], datetime)
+        self.assertIsInstance(df['per_end_date'][1], datetime)
+        self.assertIsInstance(df['per_end_date'][2], datetime)
+        self.assertIsInstance(df['per_end_date'][3], datetime)
 
     @parameterized.expand(['GET', 'POST'])
     def test_to_numpy_returns_numpy_object(self, request_method):

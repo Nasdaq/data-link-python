@@ -7,7 +7,7 @@ if sys.version_info[:2] < (3, 7):
     reading this message your pip and/or setuptools are outdated. Please run the following to
     update them:
 
-    pip install pip setuptools --upgrade
+    pip install setuptools --upgrade
 
     Then try to reinstall nasdaq-data-link:
 

@@ -29,69 +29,93 @@ class GetPointInTimeTest(unittest.TestCase):
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_get_point_in_time_returns_data_frame_object(self, mock):
-        df = nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate', date='2020-01-01')
+        with self.assertWarns(UserWarning):
+            df = nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC', interval='asofdate', date='2020-01-01'
+            )
+
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_asofdate_call_connection(self, mock):
-        nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate', date='2020-01-01')
-        expected = call('get', 'pit/ZACKS/FC/asofdate/2020-01-01', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate', date='2020-01-01')
+            expected = call('get', 'pit/ZACKS/FC/asofdate/2020-01-01', params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_asofdate_call_connection_with_datetimes(self, mock):
-        nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate', date='2020-01-01T12:55')
-        expected = call('get', 'pit/ZACKS/FC/asofdate/2020-01-01T12:55', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC', interval='asofdate', date='2020-01-01T12:55'
+            )
+            expected = call('get', 'pit/ZACKS/FC/asofdate/2020-01-01T12:55', params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_asofdate_call_without_date(self, mock):
-        nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate')
-        expected = call('get', "pit/ZACKS/FC/asofdate/%s" % date.today(), params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate')
+            expected = call('get', "pit/ZACKS/FC/asofdate/%s" % date.today(), params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_from_call_connection(self, mock):
-        nasdaqdatalink.get_point_in_time(
-            'ZACKS/FC',
-            interval='from',
-            start_date='2020-01-01',
-            end_date='2020-01-02'
-        )
-        expected = call('get', 'pit/ZACKS/FC/from/2020-01-01/to/2020-01-02', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC',
+                interval='from',
+                start_date='2020-01-01',
+                end_date='2020-01-02'
+            )
+            expected = call('get', 'pit/ZACKS/FC/from/2020-01-01/to/2020-01-02', params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_from_call_connection_with_datetimes(self, mock):
-        nasdaqdatalink.get_point_in_time(
-            'ZACKS/FC',
-            interval='from',
-            start_date='2020-01-01T12:00',
-            end_date='2020-01-02T14:00'
-        )
-        expected = call('get', 'pit/ZACKS/FC/from/2020-01-01T12:00/to/2020-01-02T14:00', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC',
+                interval='from',
+                start_date='2020-01-01T12:00',
+                end_date='2020-01-02T14:00'
+            )
+            expected = call(
+                'get', 'pit/ZACKS/FC/from/2020-01-01T12:00/to/2020-01-02T14:00', params={}
+            )
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_between_call_connection(self, mock):
-        nasdaqdatalink.get_point_in_time(
-            'ZACKS/FC',
-            interval='between',
-            start_date='2020-01-01',
-            end_date='2020-01-02'
-        )
-        expected = call('get', 'pit/ZACKS/FC/between/2020-01-01/2020-01-02', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC',
+                interval='between',
+                start_date='2020-01-01',
+                end_date='2020-01-02'
+            )
+            expected = call('get', 'pit/ZACKS/FC/between/2020-01-01/2020-01-02', params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_between_call_connection_with_datetimes(self, mock):
-        nasdaqdatalink.get_point_in_time(
-            'ZACKS/FC',
-            interval='between',
-            start_date='2020-01-01T12:00',
-            end_date='2020-01-02T14:00'
-        )
-        expected = call('get', 'pit/ZACKS/FC/between/2020-01-01T12:00/2020-01-02T14:00', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_point_in_time(
+                'ZACKS/FC',
+                interval='between',
+                start_date='2020-01-01T12:00',
+                end_date='2020-01-02T14:00'
+            )
+            expected = call(
+                'get', 'pit/ZACKS/FC/between/2020-01-01T12:00/2020-01-02T14:00', params={}
+            )
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')

@@ -39,65 +39,81 @@ class GetDataTableTest(unittest.TestCase):
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_datatable_returns_datatable_object(self, mock):
-        df = nasdaqdatalink.get_table('ZACKS/FC', params={})
+        with self.assertWarns(UserWarning):
+            df = nasdaqdatalink.get_table('ZACKS/FC', params={})
+
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_datatable_with_code_returns_datatable_object(self, mock):
-        df = nasdaqdatalink.get_table('AR/MWCF', code="ICEP_WAC_Z2017_S")
+        with self.assertWarns(UserWarning):
+            df = nasdaqdatalink.get_table('AR/MWCF', code="ICEP_WAC_Z2017_S")
+
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_get_table_calls_connection_with_no_params_for_get_request(self, mock):
-        nasdaqdatalink.get_table('ZACKS/FC')
-        expected = call('get', 'datatables/ZACKS/FC', params={})
+        with self.assertWarns(UserWarning):
+            nasdaqdatalink.get_table('ZACKS/FC')
+            expected = call('get', 'datatables/ZACKS/FC', params={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_get_table_calls_connection_with_no_params_for_post_request(self, mock):
-        RequestType.USE_GET_REQUEST = False
+        with self.assertWarns(UserWarning):
+            RequestType.USE_GET_REQUEST = False
 
-        nasdaqdatalink.get_table('ZACKS/FC')
-        expected = call('post', 'datatables/ZACKS/FC', json={})
+            nasdaqdatalink.get_table('ZACKS/FC')
+            expected = call('post', 'datatables/ZACKS/FC', json={})
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_get_table_calls_connection_with_params_for_get_request(self, mock):
-        params = {'ticker': ['AAPL', 'MSFT'],
-                  'per_end_date': {'gte': '2015-01-01'},
-                  'qopts': {'columns': ['ticker', 'per_end_date']},
-                  'foo': 'bar',
-                  'baz': 4
-                  }
+        with self.assertWarns(UserWarning):
+            params = {
+                'ticker': ['AAPL', 'MSFT'],
+                'per_end_date': {'gte': '2015-01-01'},
+                'qopts': {'columns': ['ticker', 'per_end_date']},
+                'foo': 'bar',
+                'baz': 4
+            }
 
-        expected_params = {'ticker[]': ['AAPL', 'MSFT'],
-                           'per_end_date.gte': '2015-01-01',
-                           'qopts.columns[]': ['ticker', 'per_end_date'],
-                           'foo': 'bar',
-                           'baz': 4
-                           }
+            expected_params = {
+                'ticker[]': ['AAPL', 'MSFT'],
+                'per_end_date.gte': '2015-01-01',
+                'qopts.columns[]': ['ticker', 'per_end_date'],
+                'foo': 'bar',
+                'baz': 4
+            }
 
-        nasdaqdatalink.get_table('ZACKS/FC', **params)
-        expected = call('get', 'datatables/ZACKS/FC', params=expected_params)
+            nasdaqdatalink.get_table('ZACKS/FC', **params)
+            expected = call('get', 'datatables/ZACKS/FC', params=expected_params)
+
         self.assertEqual(mock.call_args, expected)
 
     @patch('nasdaqdatalink.connection.Connection.request')
     def test_get_table_calls_connection_with_params_for_post_request(self, mock):
-        RequestType.USE_GET_REQUEST = False
-        params = {'ticker': ['AAPL', 'MSFT'],
-                  'per_end_date': {'gte': '2015-01-01'},
-                  'qopts': {'columns': ['ticker', 'per_end_date']},
-                  'foo': 'bar',
-                  'baz': 4
-                  }
+        with self.assertWarns(UserWarning):
+            RequestType.USE_GET_REQUEST = False
+            params = {
+                'ticker': ['AAPL', 'MSFT'],
+                'per_end_date': {'gte': '2015-01-01'},
+                'qopts': {'columns': ['ticker', 'per_end_date']},
+                'foo': 'bar',
+                'baz': 4
+            }
 
-        expected_params = {'ticker': ['AAPL', 'MSFT'],
-                           'per_end_date.gte': '2015-01-01',
-                           'qopts.columns': ['ticker', 'per_end_date'],
-                           'foo': 'bar',
-                           'baz': 4
-                           }
+            expected_params = {
+                'ticker': ['AAPL', 'MSFT'],
+                'per_end_date.gte': '2015-01-01',
+                'qopts.columns': ['ticker', 'per_end_date'],
+                'foo': 'bar',
+                'baz': 4
+            }
 
-        nasdaqdatalink.get_table('ZACKS/FC', **params)
-        expected = call('post', 'datatables/ZACKS/FC', json=expected_params)
+            nasdaqdatalink.get_table('ZACKS/FC', **params)
+            expected = call('post', 'datatables/ZACKS/FC', json=expected_params)
+
         self.assertEqual(mock.call_args, expected)
