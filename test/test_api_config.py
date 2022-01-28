@@ -80,8 +80,8 @@ class ApiConfigTest(TestCase):
     def test_read_key_when_files_not_set(self):
         ApiConfig.api_key = None
         with mock.patch("nasdaqdatalink.api_config.default_config_filename") as mock_default_config_filename:
-             mock_default_config_filename.return_value = TEST_DEFAULT_FILE
-             read_key()
+            mock_default_config_filename.return_value = TEST_DEFAULT_FILE
+            read_key()
 
         mock_default_config_filename.assert_called_once
         self.assertEqual(ApiConfig.api_key, None)
@@ -92,18 +92,19 @@ class ApiConfigTest(TestCase):
         ApiConfig.api_key = None # Set None, we are not testing save_key
 
         with mock.patch("nasdaqdatalink.api_config.default_config_filename") as mock_default_config_filename:
-             mock_default_config_filename.return_value = TEST_DEFAULT_FILE
-             read_key()
+            mock_default_config_filename.return_value = TEST_DEFAULT_FILE
+            read_key()
 
         self.assertEqual(ApiConfig.api_key, 'keyfordefaultfile')
+
 
     def _read_key_from_file_helper(self, given, expected):
         save_key(given, TEST_DEFAULT_FILE)
         ApiConfig.api_key = None # Set None, we are not testing save_key
 
         with mock.patch("nasdaqdatalink.api_config.default_config_filename") as mock_default_config_filename:
-             mock_default_config_filename.return_value = TEST_DEFAULT_FILE
-             read_key()
+            mock_default_config_filename.return_value = TEST_DEFAULT_FILE
+            read_key()
 
         self.assertEqual(ApiConfig.api_key, expected)
 
