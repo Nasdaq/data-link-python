@@ -4,12 +4,16 @@ import os
 from unittest import TestCase, mock
 from nasdaqdatalink.api_config import *
 
+TEST_BASE_PATH = os.path.join(
+  os.path.dirname(os.path.realpath(__file__)), ".nasdaq-config"
+)
+
 TEST_KEY_FILE = os.path.join(
-  os.path.dirname(os.path.realpath(__file__)), ".nasdaq-config", "testkeyfile"
+  TEST_BASE_PATH, "testkeyfile"
 )
 
 TEST_DEFAULT_FILE = os.path.join(
-  os.path.dirname(os.path.realpath(__file__)), ".nasdaq-config", "defaultkeyfile"
+  TEST_BASE_PATH, "defaultkeyfile"
 )
 
 TEST_DEFAULT_FILE_CONTENTS = 'keyfordefaultfile'
@@ -33,6 +37,8 @@ class ApiConfigTest(TestCase):
 
         if os.path.exists(TEST_DEFAULT_FILE):
             os.remove(TEST_DEFAULT_FILE)
+
+        os.removedirs(TEST_BASE_PATH)
 
 
     def test_read_key_when_environment_variable_set(self):
