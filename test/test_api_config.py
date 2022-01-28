@@ -65,6 +65,12 @@ class ApiConfigTest(TestCase):
                 read_key()
 
 
+    def test_read_key_when_env_key_empty(self):
+        os.environ['NASDAQ_DATA_LINK_API_KEY'] = ''
+        with self.assertRaises(ValueError):
+            read_key()
+
+
     def test_read_key_when_files_not_set(self):
         ApiConfig.api_key = None
         with mock.patch("nasdaqdatalink.api_config.default_config_filename") as mock_default_config_filename:
