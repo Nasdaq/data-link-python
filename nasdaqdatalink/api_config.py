@@ -60,6 +60,11 @@ def raise_empty_file(config_filename):
     raise ValueError("File '{:s}' is empty.".format(config_filename))
 
 
+def get_first_non_empty(file_handle):
+    lines = [line.strip() for line in file_handle.readlines()]
+    return next((line for line in lines if line), None)
+
+
 def read_key_from_file(filename=None):
     if filename is None:
         filename = default_config_filename()
@@ -68,7 +73,7 @@ def read_key_from_file(filename=None):
         raise_empty_file(filename)
 
     with open(filename, 'r') as f:
-        apikey = f.read()
+        apikey = get_first_non_empty(f)
 
     if not apikey:
         raise_empty_file(filename)
