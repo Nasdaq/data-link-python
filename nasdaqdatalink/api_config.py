@@ -60,6 +60,15 @@ def raise_empty_file(config_filename):
     raise ValueError("File '{:s}' is empty.".format(config_filename))
 
 
+def raise_empty_environment_variable():
+    raise ValueError("NASDAQ_DATA_LINK_API_KEY cannot be empty")
+
+
+def get_first_non_empty(file_handle):
+    lines = [line.strip() for line in file_handle.readlines()]
+    return next((line for line in lines if line), None)
+
+
 def read_key_from_file(filename=None):
     if filename is None:
         filename = default_config_filename()
@@ -68,7 +77,7 @@ def read_key_from_file(filename=None):
         raise_empty_file(filename)
 
     with open(filename, 'r') as f:
-        apikey = f.read()
+        apikey = get_first_non_empty(f)
 
     if not apikey:
         raise_empty_file(filename)
@@ -81,7 +90,11 @@ def api_key_environment_variable_exists():
 
 
 def read_key_from_environment_variable():
-    ApiConfig.api_key = os.environ.get(NASDAQ_DATA_LINK_API_KEY)
+    apikey = os.environ.get(NASDAQ_DATA_LINK_API_KEY)
+    if not apikey:
+        raise_empty_environment_variable()
+
+    ApiConfig.api_key = apikey
 
 
 def read_key(filename=None):
