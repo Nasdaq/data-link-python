@@ -82,7 +82,7 @@ def read_key_from_file(filename=None):
     if not apikey:
         raise_empty_file(filename)
 
-    ApiConfig.api_key = apikey
+    ApiConfig.api_key = apikey.strip()
 
 
 def api_key_environment_variable_exists():
