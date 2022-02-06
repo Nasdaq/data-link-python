@@ -97,8 +97,11 @@ def read_key_from_environment_variable():
     ApiConfig.api_key = apikey
 
 
-def read_key(filename=None):
+def read_key(filename=None,key=None):
     if api_key_environment_variable_exists():
         read_key_from_environment_variable()
-    elif config_file_exists(filename):
+    elif filename is not None:
+        config_file_exists(filename)
         read_key_from_file(filename)
+    elif key is not None:
+        ApiConfig.api_key = key
