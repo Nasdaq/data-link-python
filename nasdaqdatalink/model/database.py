@@ -4,7 +4,7 @@ from six.moves.urllib.parse import urlencode, urlparse
 
 import nasdaqdatalink.model.dataset
 from nasdaqdatalink.api_config import ApiConfig
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.errors.data_link_error import DataLinkError
 from nasdaqdatalink.message import Message
 from nasdaqdatalink.operations.get import GetOperation

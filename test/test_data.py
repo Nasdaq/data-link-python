@@ -77,7 +77,7 @@ class ListDataTest(unittest.TestCase):
         httpretty.disable()
         httpretty.reset()
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_data_calls_connection(self, mock):
         Data.all(params={'database_code': 'NSE', 'dataset_code': 'OIL'})
         expected = call('get', 'datasets/NSE/OIL/data', params={})

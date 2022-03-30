@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.api_config import ApiConfig
 from test.factories.datatable import DatatableFactory
 from test.helpers.httpretty_extension import httpretty

@@ -37,21 +37,21 @@ class GetDataTableTest(unittest.TestCase):
     def tearDown(self):
         RequestType.USE_GET_REQUEST = True
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_returns_datatable_object(self, mock):
         with self.assertWarns(UserWarning):
             df = nasdaqdatalink.get_table('ZACKS/FC', params={})
 
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_with_code_returns_datatable_object(self, mock):
         with self.assertWarns(UserWarning):
             df = nasdaqdatalink.get_table('AR/MWCF', code="ICEP_WAC_Z2017_S")
 
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_get_table_calls_connection_with_no_params_for_get_request(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_table('ZACKS/FC')
@@ -59,7 +59,7 @@ class GetDataTableTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_get_table_calls_connection_with_no_params_for_post_request(self, mock):
         with self.assertWarns(UserWarning):
             RequestType.USE_GET_REQUEST = False
@@ -69,7 +69,7 @@ class GetDataTableTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_get_table_calls_connection_with_params_for_get_request(self, mock):
         with self.assertWarns(UserWarning):
             params = {
@@ -93,7 +93,7 @@ class GetDataTableTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_get_table_calls_connection_with_params_for_post_request(self, mock):
         with self.assertWarns(UserWarning):
             RequestType.USE_GET_REQUEST = False

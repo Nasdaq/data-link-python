@@ -3,7 +3,7 @@ from time import sleep
 
 from six.moves.urllib.request import urlopen
 
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.errors.data_link_error import DataLinkError
 from nasdaqdatalink.message import Message
 from nasdaqdatalink.operations.get import GetOperation

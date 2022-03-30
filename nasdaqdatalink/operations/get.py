@@ -1,7 +1,7 @@
 from inflection import singularize
 
 from .operation import Operation
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.util import Util
 
 

@@ -8,7 +8,7 @@ from nasdaqdatalink.model.dataset import Dataset
 from nasdaqdatalink.model.merged_dataset import MergedDataset
 from nasdaqdatalink.get import get
 from nasdaqdatalink.api_config import ApiConfig
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 
 
 class GetSingleDatasetTest(unittest.TestCase):
@@ -37,7 +37,7 @@ class GetSingleDatasetTest(unittest.TestCase):
 
     def test_setting_api_key_config(self):
         mock_connection = Mock(wraps=Connection)
-        with patch('nasdaqdatalink.connection.Connection.execute_request',
+        with patch('nasdaqdatalink.connection.execute_request',
                    new=mock_connection.execute_request) as mock:
             ApiConfig.api_key = 'api_key_configured'
             get('NSE/OIL')

@@ -37,26 +37,26 @@ class GetDatatableDatasetTest(ModifyRetrySettingsTestCase):
     def tearDown(self):
         RequestType.USE_GET_REQUEST = True
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_metadata_calls_connection(self, mock):
         Datatable('ZACKS/FC').data_fields()
         expected = call('get', 'datatables/ZACKS/FC/metadata', params={})
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_data_calls_connection_with_no_params_for_get_request(self, mock):
         Datatable('ZACKS/FC').data()
         expected = call('get', 'datatables/ZACKS/FC', params={})
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_data_calls_connection_with_no_params_for_post_request(self, mock):
         RequestType.USE_GET_REQUEST = False
         Datatable('ZACKS/FC').data()
         expected = call('post', 'datatables/ZACKS/FC', json={})
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_calls_connection_with_params_for_get_request(self, mock):
         params = {'ticker': ['AAPL', 'MSFT'],
                   'per_end_date': {'gte': '2015-01-01'},
@@ -76,7 +76,7 @@ class GetDatatableDatasetTest(ModifyRetrySettingsTestCase):
         expected = call('get', 'datatables/ZACKS/FC', params=expected_params)
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datatable_calls_connection_with_params_for_post_request(self, mock):
         RequestType.USE_GET_REQUEST = False
         params = {'ticker': ['AAPL', 'MSFT'],

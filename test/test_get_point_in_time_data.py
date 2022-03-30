@@ -27,7 +27,7 @@ class GetPointInTimeTest(unittest.TestCase):
     def tearDown(self):
         RequestType.USE_GET_REQUEST = True
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_get_point_in_time_returns_data_frame_object(self, mock):
         with self.assertWarns(UserWarning):
             df = nasdaqdatalink.get_point_in_time(
@@ -36,7 +36,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertIsInstance(df, pandas.core.frame.DataFrame)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_asofdate_call_connection(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate', date='2020-01-01')
@@ -44,7 +44,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_asofdate_call_connection_with_datetimes(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time(
@@ -54,7 +54,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_asofdate_call_without_date(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='asofdate')
@@ -62,7 +62,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_from_call_connection(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time(
@@ -75,7 +75,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_from_call_connection_with_datetimes(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time(
@@ -90,7 +90,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_between_call_connection(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time(
@@ -103,7 +103,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_between_call_connection_with_datetimes(self, mock):
         with self.assertWarns(UserWarning):
             nasdaqdatalink.get_point_in_time(
@@ -118,7 +118,7 @@ class GetPointInTimeTest(unittest.TestCase):
 
         self.assertEqual(mock.call_args, expected)
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_invalid_interval_connection(self, mock):
         self.assertRaises(InvalidRequestError, lambda: nasdaqdatalink.get_point_in_time('ZACKS/FC'))
         self.assertRaises(
@@ -126,7 +126,7 @@ class GetPointInTimeTest(unittest.TestCase):
             lambda: nasdaqdatalink.get_point_in_time('ZACKS/FC', interval='nasdaqdatalink')
         )
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_invalid_from_connection(self, mock):
         self.assertRaises(
             InvalidRequestError,
@@ -145,7 +145,7 @@ class GetPointInTimeTest(unittest.TestCase):
             )
         )
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_invalid_between_connection(self, mock):
         self.assertRaises(
             InvalidRequestError,

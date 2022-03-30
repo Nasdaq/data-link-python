@@ -1,4 +1,4 @@
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.api_config import ApiConfig
 from nasdaqdatalink.errors.data_link_error import (
     DataLinkError, LimitExceededError, InternalServerError,
@@ -65,7 +65,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
             DataLinkError, lambda: Connection.request(request_method, 'databases'))
 
     @parameterized.expand(['GET', 'POST'])
-    @patch('nasdaqdatalink.connection.Connection.execute_request')
+    @patch('nasdaqdatalink.connection.execute_request')
     def test_build_request(self, request_method, mock):
         ApiConfig.api_key = 'api_token'
         ApiConfig.api_version = '2015-04-09'

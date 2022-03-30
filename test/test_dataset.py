@@ -30,7 +30,7 @@ class GetDatasetTest(unittest.TestCase):
         httpretty.disable()
         httpretty.reset()
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_dataset_calls_connection(self, mock):
         d = Dataset('NSE/OIL')
         d.data_fields()
@@ -84,7 +84,7 @@ class ListDatasetsTest(unittest.TestCase):
         httpretty.disable()
         httpretty.reset()
 
-    @patch('nasdaqdatalink.connection.Connection.request')
+    @patch('nasdaqdatalink.connection.request')
     def test_datasets_calls_connection(self, mock):
         Dataset.all()
         expected = call('get', 'datasets', params={})

@@ -13,103 +13,97 @@ from nasdaqdatalink.errors.data_link_error import (
     AuthenticationError, ForbiddenError, InvalidRequestError,
     NotFoundError, ServiceUnavailableError)
 
+def request(http_verb, url, **options):
+    if 'headers' in options:
+        headers = options['headers']
+    else:
+        headers = {}
 
-class Connection:
-    @classmethod
-    def request(cls, http_verb, url, **options):
-        if 'headers' in options:
-            headers = options['headers']
+    accept_value = 'application/json'
+    if ApiConfig.api_version:
+        accept_value += ", application/vnd.data.nasdaq+json;version=%s" % ApiConfig.api_version
+
+    headers = Util.merge_to_dicts({'accept': accept_value,
+                                    'request-source': 'python',
+                                    'request-source-version': VERSION}, headers)
+    if ApiConfig.api_key:
+        headers = Util.merge_to_dicts({'x-api-token': ApiConfig.api_key}, headers)
+
+    options['headers'] = headers
+
+    abs_url = '%s/%s' % (ApiConfig.api_base, url)
+
+    return execute_request(http_verb, abs_url, **options)
+
+def execute_request(http_verb, url, **options):
+    session = get_session(url)
+
+    try:
+        response = session.request(method=http_verb,
+                                    url=url,
+                                    verify=ApiConfig.verify_ssl,
+                                    **options)
+        if response.status_code < 200 or response.status_code >= 300:
+            handle_api_error(response)
         else:
-            headers = {}
+            return response
+    except requests.exceptions.RequestException as e:
+        if e.response:
+            handle_api_error(e.response)
+        raise e
 
-        accept_value = 'application/json'
-        if ApiConfig.api_version:
-            accept_value += ", application/vnd.data.nasdaq+json;version=%s" % ApiConfig.api_version
+def get_retries():
+    if not ApiConfig.use_retries:
+        return Retry(total=0)
 
-        headers = Util.merge_to_dicts({'accept': accept_value,
-                                       'request-source': 'python',
-                                       'request-source-version': VERSION}, headers)
-        if ApiConfig.api_key:
-            headers = Util.merge_to_dicts({'x-api-token': ApiConfig.api_key}, headers)
+    Retry.BACKOFF_MAX = ApiConfig.max_wait_between_retries
+    retries = Retry(total=ApiConfig.number_of_retries,
+                    connect=ApiConfig.number_of_retries,
+                    read=ApiConfig.number_of_retries,
+                    status_forcelist=ApiConfig.retry_status_codes,
+                    backoff_factor=ApiConfig.retry_backoff_factor,
+                    raise_on_status=False)
 
-        options['headers'] = headers
+    return retries
 
-        abs_url = '%s/%s' % (ApiConfig.api_base, url)
+session = requests.Session()
 
-        return cls.execute_request(http_verb, abs_url, **options)
+def get_session(url = ApiConfig.api_protocol):
+    adapter = HTTPAdapter(max_retries=get_retries())
+    session.mount(url, adapter)
+    return session
 
-    @classmethod
-    def execute_request(cls, http_verb, url, **options):
-        session = cls.get_session()
+def parse(response):
+    try:
+        return response.json()
+    except ValueError:
+        raise DataLinkError(http_status=response.status_code, http_body=response.text)
 
-        try:
-            response = session.request(method=http_verb,
-                                       url=url,
-                                       verify=ApiConfig.verify_ssl,
-                                       **options)
-            if response.status_code < 200 or response.status_code >= 300:
-                cls.handle_api_error(response)
-            else:
-                return response
-        except requests.exceptions.RequestException as e:
-            if e.response:
-                cls.handle_api_error(e.response)
-            raise e
 
-    @classmethod
-    def get_session(cls):
-        session = requests.Session()
-        adapter = HTTPAdapter(max_retries=cls.get_retries())
-        session.mount(ApiConfig.api_protocol, adapter)
 
-        return session
+def handle_api_error(resp):
+    error_body = parse(resp)
 
-    @classmethod
-    def get_retries(cls):
-        if not ApiConfig.use_retries:
-            return Retry(total=0)
+    # if our app does not form a proper data_link_error response
+    # throw generic error
+    if 'error' not in error_body:
+        raise DataLinkError(http_status=resp.status_code, http_body=resp.text)
 
-        Retry.BACKOFF_MAX = ApiConfig.max_wait_between_retries
-        retries = Retry(total=ApiConfig.number_of_retries,
-                        connect=ApiConfig.number_of_retries,
-                        read=ApiConfig.number_of_retries,
-                        status_forcelist=ApiConfig.retry_status_codes,
-                        backoff_factor=ApiConfig.retry_backoff_factor,
-                        raise_on_status=False)
+    code = error_body['error']['code']
+    message = error_body['error']['message']
+    prog = re.compile('^QE([a-zA-Z])x')
+    if prog.match(code):
+        code_letter = prog.match(code).group(1)
 
-        return retries
+    d_klass = {
+        'L': LimitExceededError,
+        'M': InternalServerError,
+        'A': AuthenticationError,
+        'P': ForbiddenError,
+        'S': InvalidRequestError,
+        'C': NotFoundError,
+        'X': ServiceUnavailableError
+    }
+    klass = d_klass.get(code_letter, DataLinkError)
 
-    @classmethod
-    def parse(cls, response):
-        try:
-            return response.json()
-        except ValueError:
-            raise DataLinkError(http_status=response.status_code, http_body=response.text)
-
-    @classmethod
-    def handle_api_error(cls, resp):
-        error_body = cls.parse(resp)
-
-        # if our app does not form a proper data_link_error response
-        # throw generic error
-        if 'error' not in error_body:
-            raise DataLinkError(http_status=resp.status_code, http_body=resp.text)
-
-        code = error_body['error']['code']
-        message = error_body['error']['message']
-        prog = re.compile('^QE([a-zA-Z])x')
-        if prog.match(code):
-            code_letter = prog.match(code).group(1)
-
-        d_klass = {
-            'L': LimitExceededError,
-            'M': InternalServerError,
-            'A': AuthenticationError,
-            'P': ForbiddenError,
-            'S': InvalidRequestError,
-            'C': NotFoundError,
-            'X': ServiceUnavailableError
-        }
-        klass = d_klass.get(code_letter, DataLinkError)
-
-        raise klass(message, resp.status_code, resp.text, resp.headers, code)
+    raise klass(message, resp.status_code, resp.text, resp.headers, code)

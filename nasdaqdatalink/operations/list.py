@@ -1,5 +1,5 @@
 from .operation import Operation
-from nasdaqdatalink.connection import Connection
+import nasdaqdatalink.connection as Connection
 from nasdaqdatalink.util import Util
 from nasdaqdatalink.model.paginated_list import PaginatedList
 from nasdaqdatalink.utils.request_type_util import RequestType
