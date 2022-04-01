@@ -36,7 +36,7 @@ def request(http_verb, url, **options):
     return execute_request(http_verb, abs_url, **options)
 
 def execute_request(http_verb, url, **options):
-    session = get_session(url)
+    session = get_session()
 
     try:
         response = session.request(method=http_verb,
@@ -67,10 +67,10 @@ def get_retries():
     return retries
 
 session = requests.Session()
+adapter = HTTPAdapter(max_retries=get_retries())
+session.mount(ApiConfig.api_protocol, adapter)
 
-def get_session(url = ApiConfig.api_protocol):
-    adapter = HTTPAdapter(max_retries=get_retries())
-    session.mount(url, adapter)
+def get_session():
     return session
 
 def parse(response):
