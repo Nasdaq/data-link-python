@@ -66,11 +66,14 @@ def get_retries():
 
     return retries
 
-session = requests.Session()
-adapter = HTTPAdapter(max_retries=get_retries())
-session.mount(ApiConfig.api_protocol, adapter)
+session = None
 
 def get_session():
+    global session
+    if session is None:
+        session = requests.Session()
+        adapter = HTTPAdapter(max_retries=get_retries())
+        session.mount(ApiConfig.api_protocol, adapter)
     return session
 
 def parse(response):
