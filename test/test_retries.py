@@ -1,7 +1,7 @@
 import unittest
 import json
 
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.api_config import ApiConfig
 from test.factories.datatable import DatatableFactory
 from test.helpers.httpretty_extension import httpretty
@@ -28,6 +28,8 @@ class ModifyRetrySettingsTestCase(unittest.TestCase):
 class TestRetries(ModifyRetrySettingsTestCase):
 
     def setUp(self):
+        # reset session to None before every test
+        connection.session = None
         ApiConfig.use_retries = True
         super(TestRetries, self).setUp()
 
@@ -47,13 +49,13 @@ class TestRetries(ModifyRetrySettingsTestCase):
     def test_modifying_use_retries(self):
         ApiConfig.use_retries = False
 
-        retries = Connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
+        retries = connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
         self.assertEqual(retries.total, 0)
 
     def test_modifying_number_of_retries(self):
         ApiConfig.number_of_retries = 3000
 
-        retries = Connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
+        retries = connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
 
         self.assertEqual(retries.total, ApiConfig.number_of_retries)
         self.assertEqual(retries.connect, ApiConfig.number_of_retries)
@@ -62,19 +64,19 @@ class TestRetries(ModifyRetrySettingsTestCase):
     def test_modifying_retry_backoff_factor(self):
         ApiConfig.retry_backoff_factor = 3000
 
-        retries = Connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
+        retries = connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
         self.assertEqual(retries.backoff_factor, ApiConfig.retry_backoff_factor)
 
     def test_modifying_retry_status_codes(self):
         ApiConfig.retry_status_codes = [1, 2, 3]
 
-        retries = Connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
+        retries = connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
         self.assertEqual(retries.status_forcelist, ApiConfig.retry_status_codes)
 
     def test_modifying_max_wait_between_retries(self):
         ApiConfig.max_wait_between_retries = 3000
 
-        retries = Connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
+        retries = connection.get_session().get_adapter(ApiConfig.api_protocol).max_retries
         self.assertEqual(retries.BACKOFF_MAX, ApiConfig.max_wait_between_retries)
 
     @httpretty.enabled
@@ -87,7 +89,7 @@ class TestRetries(ModifyRetrySettingsTestCase):
                                "https://data.nasdaq.com/api/v3/databases",
                                responses=mock_responses)
 
-        response = Connection.request('get', 'databases')
+        response = connection.request('get', 'databases')
         self.assertEqual(response.json(), self.datatable)
         self.assertEqual(response.status_code, self.success_response.status)
 
@@ -100,7 +102,7 @@ class TestRetries(ModifyRetrySettingsTestCase):
                                "https://data.nasdaq.com/api/v3/databases",
                                responses=mock_responses)
 
-        self.assertRaises(InternalServerError, Connection.request, 'get', 'databases')
+        self.assertRaises(InternalServerError, connection.request, 'get', 'databases')
 
     @httpretty.enabled
     def test_correct_response_exception_raised_for_errors_not_in_retry_status_codes(self):
@@ -110,4 +112,4 @@ class TestRetries(ModifyRetrySettingsTestCase):
                                "https://data.nasdaq.com/api/v3/databases",
                                responses=mock_responses)
 
-        self.assertRaises(InternalServerError, Connection.request, 'get', 'databases')
+        self.assertRaises(InternalServerError, connection.request, 'get', 'databases')

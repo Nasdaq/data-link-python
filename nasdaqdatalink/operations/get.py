@@ -1,7 +1,7 @@
 from inflection import singularize
 
 from .operation import Operation
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.util import Util
 
 
@@ -21,7 +21,7 @@ class GetOperation(Operation):
 
         path = Util.constructed_path(cls.get_path(), options['params'])
 
-        r = Connection.request('get', path, **options)
+        r = connection.request('get', path, **options)
         response_data = r.json()
         Util.convert_to_dates(response_data)
         self._raw_data = response_data[singularize(cls.lookup_key())]

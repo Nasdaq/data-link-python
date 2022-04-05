@@ -1,4 +1,4 @@
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.api_config import ApiConfig
 from nasdaqdatalink.errors.data_link_error import (
     DataLinkError, LimitExceededError, InternalServerError,
@@ -42,7 +42,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
 
         for expected_error in data_link_errors:
             self.assertRaises(
-                expected_error[2], lambda: Connection.request(request_method, 'databases'))
+                expected_error[2], lambda: connection.request(request_method, 'databases'))
 
     @parameterized.expand(['GET', 'POST'])
     def test_parse_error(self, request_method):
@@ -51,7 +51,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
                                "https://data.nasdaq.com/api/v3/databases",
                                body="not json", status=500)
         self.assertRaises(
-            DataLinkError, lambda: Connection.request(request_method, 'databases'))
+            DataLinkError, lambda: connection.request(request_method, 'databases'))
 
     @parameterized.expand(['GET', 'POST'])
     def test_non_data_link_error(self, request_method):
@@ -62,7 +62,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
                                 {'foobar':
                                  {'code': 'blah', 'message': 'something went wrong'}}), status=500)
         self.assertRaises(
-            DataLinkError, lambda: Connection.request(request_method, 'databases'))
+            DataLinkError, lambda: connection.request(request_method, 'databases'))
 
     @parameterized.expand(['GET', 'POST'])
     @patch('nasdaqdatalink.connection.execute_request')
@@ -71,7 +71,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
         ApiConfig.api_version = '2015-04-09'
         params = {'per_page': 10, 'page': 2}
         headers = {'x-custom-header': 'header value'}
-        Connection.request(request_method, 'databases', headers=headers, params=params)
+        connection.request(request_method, 'databases', headers=headers, params=params)
         expected = call(request_method, 'https://data.nasdaq.com/api/v3/databases',
                         headers={'x-custom-header': 'header value',
                                  'x-api-token': 'api_token',

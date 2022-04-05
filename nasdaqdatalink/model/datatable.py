@@ -3,7 +3,7 @@ from time import sleep
 
 from six.moves.urllib.request import urlopen
 
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.errors.data_link_error import DataLinkError
 from nasdaqdatalink.message import Message
 from nasdaqdatalink.operations.get import GetOperation
@@ -51,7 +51,7 @@ class Datatable(GetOperation, ListOperation, ModelBase):
 
         updated_options = Util.convert_options(request_type=request_type, **options)
 
-        r = Connection.request(request_type, url, **updated_options)
+        r = connection.request(request_type, url, **updated_options)
 
         response_data = r.json()
 

@@ -7,7 +7,7 @@ from mock import call, mock_open, patch
 from six.moves.urllib.parse import parse_qs, urlparse
 
 from nasdaqdatalink.api_config import ApiConfig
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.errors.data_link_error import (InternalServerError, DataLinkError)
 from nasdaqdatalink.model.database import Database
 from test.factories.database import DatabaseFactory
@@ -148,7 +148,7 @@ class BulkDownloadDatabaseTest(ModifyRetrySettingsTestCase):
 
     def test_bulk_download_to_fileaccepts_download_type(self):
         m = mock_open()
-        with patch.object(Connection, 'request') as mock_method:
+        with patch.object(connection, 'request') as mock_method:
             mock_method.return_value.url = 'https://www.blah.com/download/db.zip'
             with patch('nasdaqdatalink.model.database.open', m, create=True):
                 self.database.bulk_download_to_file(

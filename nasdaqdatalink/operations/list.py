@@ -1,5 +1,5 @@
 from .operation import Operation
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.util import Util
 from nasdaqdatalink.model.paginated_list import PaginatedList
 from nasdaqdatalink.utils.request_type_util import RequestType
@@ -12,7 +12,7 @@ class ListOperation(Operation):
         if 'params' not in options:
             options['params'] = {}
         path = Util.constructed_path(cls.list_path(), options['params'])
-        r = Connection.request('get', path, **options)
+        r = connection.request('get', path, **options)
         response_data = r.json()
         Util.convert_to_dates(response_data)
         resource = cls.create_list_from_response(response_data)
@@ -27,7 +27,7 @@ class ListOperation(Operation):
 
         updated_options = Util.convert_options(request_type=request_type, **options)
 
-        r = Connection.request(request_type, path, **updated_options)
+        r = connection.request(request_type, path, **updated_options)
 
         response_data = r.json()
         Util.convert_to_dates(response_data)

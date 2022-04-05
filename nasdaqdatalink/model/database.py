@@ -4,7 +4,7 @@ from six.moves.urllib.parse import urlencode, urlparse
 
 import nasdaqdatalink.model.dataset
 from nasdaqdatalink.api_config import ApiConfig
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 from nasdaqdatalink.errors.data_link_error import DataLinkError
 from nasdaqdatalink.message import Message
 from nasdaqdatalink.operations.get import GetOperation
@@ -43,7 +43,7 @@ class Database(GetOperation, ListOperation, ModelBase):
         path_url = self._bulk_download_path()
 
         options['stream'] = True
-        r = Connection.request('get', path_url, **options)
+        r = connection.request('get', path_url, **options)
         file_path = file_or_folder_path
         if os.path.isdir(file_or_folder_path):
             file_path = file_or_folder_path + '/' + os.path.basename(urlparse(r.url).path)

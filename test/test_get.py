@@ -8,7 +8,7 @@ from nasdaqdatalink.model.dataset import Dataset
 from nasdaqdatalink.model.merged_dataset import MergedDataset
 from nasdaqdatalink.get import get
 from nasdaqdatalink.api_config import ApiConfig
-import nasdaqdatalink.connection as Connection
+import nasdaqdatalink.connection as connection
 
 
 class GetSingleDatasetTest(unittest.TestCase):
@@ -36,7 +36,7 @@ class GetSingleDatasetTest(unittest.TestCase):
         self.assertIsInstance(result, numpy.core.records.recarray)
 
     def test_setting_api_key_config(self):
-        mock_connection = Mock(wraps=Connection)
+        mock_connection = Mock(wraps=connection)
         with patch('nasdaqdatalink.connection.execute_request',
                    new=mock_connection.execute_request) as mock:
             ApiConfig.api_key = 'api_key_configured'
