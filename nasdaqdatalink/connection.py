@@ -13,6 +13,10 @@ from nasdaqdatalink.errors.data_link_error import (
     AuthenticationError, ForbiddenError, InvalidRequestError,
     NotFoundError, ServiceUnavailableError)
 
+# global session
+session = None
+
+
 def request(http_verb, url, **options):
     if 'headers' in options:
         headers = options['headers']
@@ -23,9 +27,11 @@ def request(http_verb, url, **options):
     if ApiConfig.api_version:
         accept_value += ", application/vnd.data.nasdaq+json;version=%s" % ApiConfig.api_version
 
-    headers = Util.merge_to_dicts({'accept': accept_value,
-                                    'request-source': 'python',
-                                    'request-source-version': VERSION}, headers)
+    headers = Util.merge_to_dicts({
+        'accept': accept_value,
+        'request-source': 'python',
+        'request-source-version': VERSION
+        }, headers)
     if ApiConfig.api_key:
         headers = Util.merge_to_dicts({'x-api-token': ApiConfig.api_key}, headers)
 
@@ -35,14 +41,17 @@ def request(http_verb, url, **options):
 
     return execute_request(http_verb, abs_url, **options)
 
+
 def execute_request(http_verb, url, **options):
     session = get_session()
 
     try:
-        response = session.request(method=http_verb,
-                                    url=url,
-                                    verify=ApiConfig.verify_ssl,
-                                    **options)
+        response = session.request(
+            method=http_verb,
+            url=url,
+            verify=ApiConfig.verify_ssl,
+            **options
+            )
         if response.status_code < 200 or response.status_code >= 300:
             handle_api_error(response)
         else:
@@ -51,6 +60,7 @@ def execute_request(http_verb, url, **options):
         if e.response:
             handle_api_error(e.response)
         raise e
+
 
 def get_retries():
     if not ApiConfig.use_retries:
@@ -66,22 +76,22 @@ def get_retries():
 
     return retries
 
-session = None
 
 def get_session():
     global session
     if session is None:
+        print("initialized")
         session = requests.Session()
         adapter = HTTPAdapter(max_retries=get_retries())
         session.mount(ApiConfig.api_protocol, adapter)
     return session
+
 
 def parse(response):
     try:
         return response.json()
     except ValueError:
         raise DataLinkError(http_status=response.status_code, http_body=response.text)
-
 
 
 def handle_api_error(resp):
