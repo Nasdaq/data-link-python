@@ -80,7 +80,6 @@ def get_retries():
 def get_session():
     global session
     if session is None:
-        print("initialized")
         session = requests.Session()
         adapter = HTTPAdapter(max_retries=get_retries())
         session.mount(ApiConfig.api_protocol, adapter)
