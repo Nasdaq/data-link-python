@@ -81,3 +81,15 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
                                  'request-source-version': VERSION},
                         params={'per_page': 10, 'page': 2})
         self.assertEqual(mock.call_args, expected)
+
+    def test_session_reuse(self):
+        session1 = connection.get_session()
+        session2 = connection.get_session()
+        areSessionsSame = session1 is session2
+
+        adapter1 = connection.get_session().get_adapter(ApiConfig.api_protocol)
+        adapter2 = connection.get_session().get_adapter(ApiConfig.api_protocol)
+        areAdaptersSame = adapter1 is adapter2
+        
+        self.assertEqual(areAdaptersSame, True)
+        self.assertEqual(areSessionsSame, True)
