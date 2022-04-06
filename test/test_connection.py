@@ -90,6 +90,6 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
         adapter1 = connection.get_session().get_adapter(ApiConfig.api_protocol)
         adapter2 = connection.get_session().get_adapter(ApiConfig.api_protocol)
         areAdaptersSame = adapter1 is adapter2
-        
+
         self.assertEqual(areAdaptersSame, True)
         self.assertEqual(areSessionsSame, True)
