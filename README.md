@@ -50,7 +50,7 @@ explicitly call `read_key()` with a custom path.  See below:
 
 ```python
 import nasdaqdatalink
-nasdaqdatalink.read_key(filepath="/data/.corporatenasdaqdatalinkapikey")
+nasdaqdatalink.read_key(filename="/data/.corporatenasdaqdatalinkapikey")
 ```
 
 ## Retrieving Data
