@@ -1,6 +1,7 @@
 import re
 
 import requests
+import urllib
 
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
@@ -61,6 +62,10 @@ class Connection:
         session = requests.Session()
         adapter = HTTPAdapter(max_retries=cls.get_retries())
         session.mount(ApiConfig.api_protocol, adapter)
+
+        proxies = urllib.request.getproxies()
+        if proxies is not None:
+            session.proxies.update(proxies)
 
         return session
 
