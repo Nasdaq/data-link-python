@@ -33,6 +33,14 @@ By default, SSL verification is enabled. To bypass SSL verification (not recomme
 nasdaqdatalink.ApiConfig.verify_ssl = False
 ```
 
+### API key
+
+If you would like to make more than 50 calls a day, however, you will need to create a free account and set your API key:
+
+```python
+nasdaqdatalink.ApiConfig.api_key = "YOUR_KEY_HERE"
+```
+
 ### Local API Key Environment Variable
 
 If you wish to store your API as an environment variable, you can do so by setting `NASDAQ_DATA_LINK_API_KEY`.  If set, NASDAQ_DATA_LINK_API_KEY will take precedence over the API Key file mentioned below.
