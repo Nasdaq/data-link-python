@@ -1,6 +1,6 @@
 from nasdaqdatalink.model.datatable import Datatable
 from nasdaqdatalink.errors.data_link_error import LimitExceededError
-from .api_config import ApiConfig
+from .api_config import get_config_from_kwargs
 from .message import Message
 import warnings
 import copy
@@ -14,6 +14,8 @@ def get_table(datatable_code, **options):
 
     data = None
     page_count = 0
+    api_config = get_config_from_kwargs(options)
+
     while True:
         next_options = copy.deepcopy(options)
         next_data = Datatable(datatable_code).data(params=next_options)
@@ -23,10 +25,10 @@ def get_table(datatable_code, **options):
         else:
             data.extend(next_data)
 
-        if page_count >= ApiConfig.page_limit:
+        if page_count >= api_config.page_limit:
             raise LimitExceededError(
                 Message.WARN_DATA_LIMIT_EXCEEDED % (datatable_code,
-                                                    ApiConfig.api_key
+                                                    api_config.api_key
                                                     )
             )
 

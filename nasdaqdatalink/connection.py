@@ -8,7 +8,7 @@ from requests.adapters import HTTPAdapter
 
 from .util import Util
 from .version import VERSION
-from .api_config import ApiConfig
+from .api_config import ApiConfig, get_config_from_kwargs
 from nasdaqdatalink.errors.data_link_error import (
     DataLinkError, LimitExceededError, InternalServerError,
     AuthenticationError, ForbiddenError, InvalidRequestError,
@@ -22,31 +22,36 @@ class Connection:
             headers = options['headers']
         else:
             headers = {}
+        api_config = get_config_from_kwargs(options)
 
         accept_value = 'application/json'
-        if ApiConfig.api_version:
-            accept_value += ", application/vnd.data.nasdaq+json;version=%s" % ApiConfig.api_version
+        if api_config.api_version:
+            accept_value += ", application/vnd.data.nasdaq+json;version=%s" % api_config.api_version
 
         headers = Util.merge_to_dicts({'accept': accept_value,
                                        'request-source': 'python',
                                        'request-source-version': VERSION}, headers)
-        if ApiConfig.api_key:
-            headers = Util.merge_to_dicts({'x-api-token': ApiConfig.api_key}, headers)
+        if api_config.api_key:
+            headers = Util.merge_to_dicts({'x-api-token': api_config.api_key}, headers)
 
         options['headers'] = headers
 
-        abs_url = '%s/%s' % (ApiConfig.api_base, url)
+        abs_url = '%s/%s' % (api_config.api_base, url)
 
         return cls.execute_request(http_verb, abs_url, **options)
 
     @classmethod
     def execute_request(cls, http_verb, url, **options):
-        session = cls.get_session()
+        params = getattr(options, 'params', None)
+        session = getattr(params, 'session', None)
+        if session is None:
+            session = cls.get_session()
 
+        api_config = get_config_from_kwargs(options)
         try:
             response = session.request(method=http_verb,
                                        url=url,
-                                       verify=ApiConfig.verify_ssl,
+                                       verify=api_config.verify_ssl,
                                        **options)
             if response.status_code < 200 or response.status_code >= 300:
                 cls.handle_api_error(response)

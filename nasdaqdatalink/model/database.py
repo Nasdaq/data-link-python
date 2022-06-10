@@ -3,7 +3,7 @@ import os
 from six.moves.urllib.parse import urlencode, urlparse
 
 import nasdaqdatalink.model.dataset
-from nasdaqdatalink.api_config import ApiConfig
+from nasdaqdatalink.api_config import get_config_from_kwargs
 from nasdaqdatalink.connection import Connection
 from nasdaqdatalink.errors.data_link_error import DataLinkError
 from nasdaqdatalink.message import Message
@@ -21,15 +21,16 @@ class Database(GetOperation, ListOperation, ModelBase):
         return metadata['database_code']
 
     def bulk_download_url(self, **options):
+        api_config = get_config_from_kwargs(options)
         url = self._bulk_download_path()
-        url = ApiConfig.api_base + '/' + url
+        url = api_config.api_base + '/' + url
 
         if 'params' not in options:
             options['params'] = {}
-        if ApiConfig.api_key:
-            options['params']['api_key'] = ApiConfig.api_key
-        if ApiConfig.api_version:
-            options['params']['api_version'] = ApiConfig.api_version
+        if api_config.api_key:
+            options['params']['api_key'] = api_config.api_key
+        if api_config.api_version:
+            options['params']['api_version'] = api_config.api_version
 
         if list(options.keys()):
             url += '?' + urlencode(options['params'])

@@ -17,6 +17,18 @@ class ApiConfig:
     retry_status_codes = [429] + list(range(500, 512))
     verify_ssl = True
 
+    def read_key(self, filename):
+        if not os.path.isfile(filename):
+            raise_empty_file(filename)
+
+        with open(filename, 'r') as f:
+            apikey = get_first_non_empty(f)
+
+        if not apikey:
+            raise_empty_file(filename)
+
+        self.api_key = apikey
+
 
 def create_file(config_filename):
     # Create the file as well as the parent dir if needed.
@@ -102,3 +114,11 @@ def read_key(filename=None):
         read_key_from_environment_variable()
     elif config_file_exists(filename):
         read_key_from_file(filename)
+
+
+def get_config_from_kwargs(kwargs):
+    params = getattr(kwargs, "params", None)
+    result = getattr(params, "api_config", None)
+    if result is None:
+        result = ApiConfig
+    return result
