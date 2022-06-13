@@ -42,9 +42,9 @@ class Connection:
 
     @classmethod
     def execute_request(cls, http_verb, url, **options):
-        if 'session' in options['params']:
-            session = options['params']['session']
-        else:
+        params = getattr(options, 'params', None)
+        session = getattr(params, 'session', None)
+        if session is None:
             session = cls.get_session()
 
         api_config = get_config_from_kwargs(options)

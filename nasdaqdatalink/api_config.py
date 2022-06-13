@@ -117,7 +117,8 @@ def read_key(filename=None):
 
 
 def get_config_from_kwargs(kwargs):
-    result = kwargs["params"]["api_config"]
+    params = getattr(kwargs, "params", None)
+    result = getattr(params, "api_config", None)
     if result is None:
         result = ApiConfig
     return result
