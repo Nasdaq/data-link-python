@@ -17,7 +17,7 @@ class ApiConfig:
     retry_status_codes = [429] + list(range(500, 512))
     verify_ssl = True
 
-    def read_key(self, filename):
+    def read_key(self, filename=None):
         if not os.path.isfile(filename):
             raise_empty_file(filename)
 
@@ -117,8 +117,11 @@ def read_key(filename=None):
 
 
 def get_config_from_kwargs(kwargs):
-    params = getattr(kwargs, "params", None)
-    result = getattr(params, "api_config", None)
-    if result is None:
-        result = ApiConfig
+    result = ApiConfig
+    if isinstance(kwargs, dict):
+        params = kwargs.get('params')
+        if isinstance(params, dict):
+            result = params.get('api_config')
+            if not isinstance(result, ApiConfig):
+                result = ApiConfig
     return result
