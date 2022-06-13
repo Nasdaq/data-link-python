@@ -10,24 +10,26 @@ import requests
 import urllib
 
 
-def get_retries(api_config):
-    if isinstance(api_config, ApiConfig):
-        if not api_config.use_retries:
-            return Retry(total=0)
+def get_retries(api_config=ApiConfig):
+    retries = None
+    if not api_config.use_retries:
+        return Retry(total=0)
 
-        Retry.BACKOFF_MAX = api_config.max_wait_between_retries
-        retries = Retry(total=api_config.number_of_retries,
-                        connect=api_config.number_of_retries,
-                        read=api_config.number_of_retries,
-                        status_forcelist=api_config.retry_status_codes,
-                        backoff_factor=api_config.retry_backoff_factor,
-                        raise_on_status=False)
+    Retry.BACKOFF_MAX = api_config.max_wait_between_retries
+    retries = Retry(total=api_config.number_of_retries,
+                    connect=api_config.number_of_retries,
+                    read=api_config.number_of_retries,
+                    status_forcelist=api_config.retry_status_codes,
+                    backoff_factor=api_config.retry_backoff_factor,
+                    raise_on_status=False)
     return retries
 
 
 class AuthorizedSession:
     def __init__(self, api_config=ApiConfig) -> None:
         super(AuthorizedSession, self).__init__()
+        if not isinstance(api_config, ApiConfig):
+            api_config = ApiConfig
         self._api_config = api_config
         self._auth_session = requests.Session()
         retries = get_retries(self._api_config)
