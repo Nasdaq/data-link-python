@@ -47,6 +47,10 @@ class Connection:
             session = cls.get_session()
 
         api_config = get_config_from_kwargs(options)
+
+        # clean the request payload
+        options.get('params', {}).pop('session', None)
+        options.get('params', {}).pop('api_config', None)
         try:
             response = session.request(method=http_verb,
                                        url=url,
