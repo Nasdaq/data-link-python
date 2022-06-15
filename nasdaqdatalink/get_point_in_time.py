@@ -1,6 +1,6 @@
 from nasdaqdatalink.model.point_in_time import PointInTime
 from nasdaqdatalink.errors.data_link_error import LimitExceededError
-from .api_config import get_config_from_kwargs
+from .api_config import ApiConfig
 from .message import Message
 from nasdaqdatalink.errors.data_link_error import InvalidRequestError
 import warnings
@@ -23,7 +23,7 @@ def get_point_in_time(datatable_code, **options):
 
     data = None
     page_count = 0
-    api_config = get_config_from_kwargs(options)
+    api_config = options.get('api_config', ApiConfig)
     while True:
         next_options = copy.deepcopy(options)
         next_data = PointInTime(datatable_code, pit=pit_options).data(params=next_options)

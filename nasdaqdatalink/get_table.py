@@ -1,6 +1,6 @@
 from nasdaqdatalink.model.datatable import Datatable
 from nasdaqdatalink.errors.data_link_error import LimitExceededError
-from .api_config import get_config_from_kwargs
+from .api_config import ApiConfig
 from .message import Message
 import warnings
 import copy
@@ -14,8 +14,7 @@ def get_table(datatable_code, **options):
 
     data = None
     page_count = 0
-    api_config = get_config_from_kwargs(options)
-
+    api_config = options.get('api_config', ApiConfig)
     while True:
         next_options = copy.deepcopy(options)
         next_data = Datatable(datatable_code).data(params=next_options)
