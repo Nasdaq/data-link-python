@@ -42,8 +42,7 @@ class Connection:
 
     @classmethod
     def execute_request(cls, http_verb, url, **options):
-        params = getattr(options, 'params', None)
-        session = getattr(params, 'session', None)
+        session = options.get('params', {}).get('session', None)
         if session is None:
             session = cls.get_session()
 
