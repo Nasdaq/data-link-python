@@ -14,6 +14,11 @@ from nasdaqdatalink.errors.data_link_error import (
     AuthenticationError, ForbiddenError, InvalidRequestError,
     NotFoundError, ServiceUnavailableError)
 
+KW_TO_REMOVE = [
+    'session',
+    'api_config'
+]
+
 
 class Connection:
     @classmethod
@@ -48,9 +53,7 @@ class Connection:
 
         api_config = get_config_from_kwargs(options)
 
-        # clean the request payload
-        options.get('params', {}).pop('session', None)
-        options.get('params', {}).pop('api_config', None)
+        cls.options_kw_strip(options)
         try:
             response = session.request(method=http_verb,
                                        url=url,
@@ -126,3 +129,8 @@ class Connection:
         klass = d_klass.get(code_letter, DataLinkError)
 
         raise klass(message, resp.status_code, resp.text, resp.headers, code)
+
+    @classmethod
+    def options_kw_strip(self, options):
+        for kw in KW_TO_REMOVE:
+            options.get('params', {}).pop(kw, None)
