@@ -59,5 +59,6 @@ class AuthorizedSessionTest(unittest.TestCase):
     def test_call_get_point_in_time_with_session_and_api_config(self, mock):
         authed_session = AuthorizedSession()
         authed_session.get_point_in_time('DATABASE/CODE', interval='asofdate', date='2020-01-01')
-        mock.assert_called_with('DATABASE/CODE', interval='asofdate', date='2020-01-01', api_config=ApiConfig,
+        mock.assert_called_with('DATABASE/CODE', interval='asofdate',
+                                date='2020-01-01', api_config=ApiConfig,
                                 session=authed_session._auth_session)
