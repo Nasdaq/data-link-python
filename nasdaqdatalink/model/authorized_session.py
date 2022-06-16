@@ -1,16 +1,12 @@
+import nasdaqdatalink
 from nasdaqdatalink.api_config import ApiConfig
-from nasdaqdatalink.get import get
-from nasdaqdatalink.bulkdownload import bulkdownload
-from nasdaqdatalink.export_table import export_table
-from nasdaqdatalink.get_table import get_table
-from nasdaqdatalink.get_point_in_time import get_point_in_time
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 import requests
 import urllib
 
 
-def get_retries(api_config=ApiConfig):
+def get_retries(api_config=nasdaqdatalink.ApiConfig):
     retries = None
     if not api_config.use_retries:
         return Retry(total=0)
@@ -41,19 +37,21 @@ class AuthorizedSession:
             self._auth_session.proxies.update(proxies)
 
     def get(self, dataset, **kwargs):
-        get(dataset, session=self._auth_session, api_config=self._api_config, **kwargs)
+        nasdaqdatalink.get(dataset, session=self._auth_session,
+                           api_config=self._api_config, **kwargs)
 
     def bulkdownload(self, database, **kwargs):
-        bulkdownload(database, session=self._auth_session, api_config=self._api_config, **kwargs)
+        nasdaqdatalink.bulkdownload(database, session=self._auth_session,
+                                    api_config=self._api_config, **kwargs)
 
     def export_table(self, datatable_code, **kwargs):
-        export_table(datatable_code, session=self._auth_session,
-                     api_config=self._api_config, **kwargs)
+        nasdaqdatalink.export_table(datatable_code, session=self._auth_session,
+                                    api_config=self._api_config, **kwargs)
 
     def get_table(self, datatable_code, **options):
-        get_table(datatable_code, session=self._auth_session,
-                  api_config=self._api_config, **options)
+        nasdaqdatalink.get_table(datatable_code, session=self._auth_session,
+                                 api_config=self._api_config, **options)
 
     def get_point_in_time(self, datatable_code, **options):
-        get_point_in_time(datatable_code, session=self._auth_session,
-                          api_config=self._api_config, **options)
+        nasdaqdatalink.get_point_in_time(datatable_code, session=self._auth_session,
+                                         api_config=self._api_config, **options)
