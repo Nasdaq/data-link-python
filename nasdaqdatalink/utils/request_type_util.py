@@ -1,5 +1,5 @@
 from urllib.parse import urlencode
-from nasdaqdatalink.api_config import ApiConfig
+from nasdaqdatalink.api_config import get_config_from_kwargs
 
 
 class RequestType(object):
@@ -13,7 +13,8 @@ class RequestType(object):
     @classmethod
     def get_request_type(cls, url, **params):
         query_string = urlencode(params['params'])
-        request_url = '%s/%s/%s' % (ApiConfig.api_base, url, query_string)
+        api_config = get_config_from_kwargs(params)
+        request_url = '%s/%s/%s' % (api_config.api_base, url, query_string)
         if RequestType.USE_GET_REQUEST and (len(request_url) < cls.MAX_URL_LENGTH_FOR_GET):
             return 'get'
         else:
