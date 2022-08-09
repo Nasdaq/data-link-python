@@ -97,11 +97,11 @@ class Connection:
 
         # if our app does not form a proper data_link_error response
         # throw generic error
-        if 'error' not in error_body:
+        if 'quandl_error' not in error_body:
             raise DataLinkError(http_status=resp.status_code, http_body=resp.text)
 
-        code = error_body['error']['code']
-        message = error_body['error']['message']
+        code = error_body['quandl_error']['code']
+        message = error_body['quandl_error']['message']
         prog = re.compile('^QE([a-zA-Z])x')
         if prog.match(code):
             code_letter = prog.match(code).group(1)
