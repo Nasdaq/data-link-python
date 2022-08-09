@@ -35,7 +35,7 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
         httpretty.register_uri(getattr(httpretty, request_method),
                                "https://data.nasdaq.com/api/v3/databases",
                                responses=[httpretty.Response(body=json.dumps(
-                                   {'error':
+                                   {'quandl_error':
                                     {'code': x[0], 'message': 'something went wrong'}}),
                                    status=x[1]) for x in data_link_errors]
                                )

@@ -1,3 +1,7 @@
+### 1.0.3 - 2022-08-07
+
+* Fixes an issue with errors not being reported correctly.
+
 ### 1.0.2 - 2022-05-02
 
 * Fixes an issue with sessions not respecting proxy settings.

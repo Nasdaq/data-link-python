@@ -179,7 +179,7 @@ class BulkDownloadDatabaseTest(ModifyRetrySettingsTestCase):
                                re.compile(
                                    'https://data.nasdaq.com/api/v3/databases/*'),
                                body=json.dumps(
-                                   {'error':
+                                   {'quandl_error':
                                     {'code': 'QEMx01', 'message': 'something went wrong'}}),
                                status=500)
 

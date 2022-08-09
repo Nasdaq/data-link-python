@@ -186,7 +186,7 @@ class ExportDataTableTest(unittest.TestCase):
         ApiConfig.number_of_retries = 2
         error_responses = [httpretty.Response(
             body=json.dumps(
-              {'error': {'code': 'QEMx01', 'message': 'something went wrong'}}
+              {'quandl_error': {'code': 'QEMx01', 'message': 'something went wrong'}}
             ),
             status=500)]
 
