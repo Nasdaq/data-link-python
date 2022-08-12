@@ -60,8 +60,8 @@ class ConnectionTest(ModifyRetrySettingsTestCase):
         httpretty.register_uri(getattr(httpretty, request_method),
                                "https://data.nasdaq.com/api/v3/databases",
                                body=json.dumps(
-            {'foobar':
-             {'code': 'blah', 'message': 'something went wrong'}}), status=500)
+                                {'foobar':
+                                 {'code': 'blah', 'message': 'something went wrong'}}), status=500)
         self.assertRaises(
             DataLinkError, lambda: Connection.request(request_method, 'databases'))
 

@@ -94,6 +94,18 @@ data_link_log = logging.getLogger("nasdaqdatalink")
 data_link_log.setLevel(logging.DEBUG)
 ```
 
+### Session
+
+By default, every API request will create a new session; This will have a performance impact when you wish to make multiple requests(see #16). You can use `AuthorizedSession` to take advantage of the reusing session:
+
+```python
+import nasdaqdatalink
+session = nasdaqdatalink.AuthorizedSession()
+data1 = session.get_table('ZACKS/FC', ticker='AAPL')
+data2 = session.get_table('ZACKS/FC', ticker='MFST')
+data3 = session.get_table('ZACKS/FC', ticker='NVDA')
+```
+
 ### Detailed Usage
 
 Our API can provide more than just data. It can also be used to search and provide metadata or to programmatically retrieve data. For these more advanced techniques please follow our [Detailed Method Guide](./FOR_DEVELOPERS.md).
