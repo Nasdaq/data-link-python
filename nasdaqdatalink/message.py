@@ -22,8 +22,9 @@ class Message:
         minimum index is 1 and the maximum index is %s'
     ERROR_REQUESTED_COLUMN_NOT_EXIST = 'Requested column index %s does not exist'
 
-    WARN_DATA_LIMIT_EXCEEDED = 'This call exceeds the amount of data that nasdaqdatalink.get_table() \
-        allows. Please use the following link in your browser, which will download the full \
+    WARN_DATA_LIMIT_EXCEEDED = 'This call exceeds the amount of data that \
+        nasdaqdatalink.get_table() allows. \
+        Please use the following link in your browser, which will download the full \
         results as a CSV file: \
         https://data.nasdaq.com.com/api/v3/datatables/%s?qopts.export=true&api_key=%s . \
         See our API documentation for more info: \
