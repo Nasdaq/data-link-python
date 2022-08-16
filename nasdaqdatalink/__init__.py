@@ -10,6 +10,7 @@ from .model.datatable import Datatable
 from .model.point_in_time import PointInTime
 from .model.data import Data
 from .model.merged_dataset import MergedDataset
+from .model.authorized_session import AuthorizedSession
 from .get import get
 from .bulkdownload import bulkdownload
 from .export_table import export_table
