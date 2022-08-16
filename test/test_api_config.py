@@ -132,3 +132,58 @@ class ApiConfigTest(TestCase):
     def test_read_key_from_file_with_multi_newline(self):
         given = "keyfordefaultfile\n\nanotherkey\n"
         self._read_key_from_file_helper(given, TEST_DEFAULT_FILE_CONTENTS)
+
+    def test_default_instance_will_have_share_values_with_singleton(self):
+        os.environ['NASDAQ_DATA_LINK_API_KEY'] = 'setinenv'
+        ApiConfig.api_key = None
+        read_key()
+        api_config = ApiConfig()
+        self.assertEqual(api_config.api_key, "setinenv")
+        # make sure change in instance will not affect the singleton
+        api_config.api_key = None
+        self.assertEqual(ApiConfig.api_key, "setinenv")
+
+    def test_get_config_from_kwargs_return_api_config_if_present(self):
+        api_config = get_config_from_kwargs({
+            'params': {
+                'api_config': ApiConfig()
+            }
+        })
+        self.assertTrue(isinstance(api_config, ApiConfig))
+
+    def test_get_config_from_kwargs_return_singleton_if_not_present_or_wrong_type(self):
+        api_config = get_config_from_kwargs(None)
+        self.assertTrue(issubclass(api_config, ApiConfig))
+        self.assertFalse(isinstance(api_config, ApiConfig))
+        api_config = get_config_from_kwargs(1)
+        self.assertTrue(issubclass(api_config, ApiConfig))
+        self.assertFalse(isinstance(api_config, ApiConfig))
+        api_config = get_config_from_kwargs({
+            'params': None
+        })
+        self.assertTrue(issubclass(api_config, ApiConfig))
+        self.assertFalse(isinstance(api_config, ApiConfig))
+
+    def test_instance_read_key_should_raise_error(self):
+        api_config = ApiConfig()
+        with self.assertRaises(TypeError):
+            api_config.read_key(None)
+        with self.assertRaises(ValueError):
+            api_config.read_key('')
+
+    def test_instance_read_key_should_raise_error_when_empty(self):
+        save_key("", TEST_KEY_FILE)
+        api_config = ApiConfig()
+        with self.assertRaises(ValueError):
+            # read empty file
+            api_config.read_key(TEST_KEY_FILE)
+
+    def test_instance_read_the_right_key(self):
+        expected_key = 'ilovepython'
+        save_key(expected_key, TEST_KEY_FILE)
+        api_config = ApiConfig()
+        api_config.api_key = ''
+        api_config.read_key(TEST_KEY_FILE)
+        self.assertEqual(ApiConfig.api_key, expected_key)
+        
+        
