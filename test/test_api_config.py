@@ -138,11 +138,12 @@ class ApiConfigTest(TestCase):
         given = "keyfordefaultfile\n\nanotherkey\n"
         self._read_key_from_file_helper(given, TEST_DEFAULT_FILE_CONTENTS)
 
+
     def test_read_config_when_environment_variable_set(self):
-        os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN'] = 'api-basein-env'
+        os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN'] = 'testdatalinkdomain.com'
         ApiConfig.api_base = None
         read_config()
-        self.assertEqual(ApiConfig.api_base, 'api-basein-env')
+        self.assertEqual(ApiConfig.api_base, '{}testdatalinkdomain.com/api/v3'.format(ApiConfig.api_protocol))
 
 
     def test_read_config_when_environment_variable_not_set(self):
@@ -153,5 +154,7 @@ class ApiConfigTest(TestCase):
 
     def test_read_config_when_env_key_empty(self):
         os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN'] = ''
+        ApiConfig.api_base = 'prevapibase'
         with self.assertRaises(ValueError):
             read_config()
+        self.assertEqual(ApiConfig.api_base, 'prevapibase')

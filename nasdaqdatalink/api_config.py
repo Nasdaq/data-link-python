@@ -103,11 +103,11 @@ def read_key_from_environment_variable():
 
 
 def read_api_base_from_environment_variable():
-    api_base = os.environ.get(NASDAQ_DATA_LINK_BASE_DOMAIN)
-    if not api_base:
+    base_domain = os.environ.get(NASDAQ_DATA_LINK_BASE_DOMAIN)
+    if not base_domain:
         raise_empty_environment_variable(NASDAQ_DATA_LINK_BASE_DOMAIN)
 
-    ApiConfig.api_base = api_base
+    ApiConfig.api_base = '{}{}/api/v3'.format(ApiConfig.api_protocol, base_domain)
 
 
 def read_key(filename=None):
