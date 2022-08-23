@@ -1,6 +1,7 @@
 import os
 
 NASDAQ_DATA_LINK_API_KEY = "NASDAQ_DATA_LINK_API_KEY"
+NASDAQ_DATA_LINK_BASE_DOMAIN = "NASDAQ_DATA_LINK_BASE_DOMAIN"
 
 
 class ApiConfig:
@@ -60,8 +61,8 @@ def raise_empty_file(config_filename):
     raise ValueError("File '{:s}' is empty.".format(config_filename))
 
 
-def raise_empty_environment_variable():
-    raise ValueError("NASDAQ_DATA_LINK_API_KEY cannot be empty")
+def raise_empty_environment_variable(key):
+    raise ValueError("{:s} cannot be empty".format(key))
 
 
 def get_first_non_empty(file_handle):
@@ -89,12 +90,24 @@ def api_key_environment_variable_exists():
     return NASDAQ_DATA_LINK_API_KEY in os.environ
 
 
+def api_base_environment_variable_exists():
+    return NASDAQ_DATA_LINK_BASE_DOMAIN in os.environ
+
+
 def read_key_from_environment_variable():
     apikey = os.environ.get(NASDAQ_DATA_LINK_API_KEY)
     if not apikey:
-        raise_empty_environment_variable()
+        raise_empty_environment_variable(NASDAQ_DATA_LINK_API_KEY)
 
     ApiConfig.api_key = apikey
+
+
+def read_api_base_from_environment_variable():
+    api_base = os.environ.get(NASDAQ_DATA_LINK_BASE_DOMAIN)
+    if not api_base:
+        raise_empty_environment_variable(NASDAQ_DATA_LINK_BASE_DOMAIN)
+
+    ApiConfig.api_base = api_base
 
 
 def read_key(filename=None):
@@ -102,3 +115,8 @@ def read_key(filename=None):
         read_key_from_environment_variable()
     elif config_file_exists(filename):
         read_key_from_file(filename)
+
+
+def read_config():
+    if api_base_environment_variable_exists():
+        read_api_base_from_environment_variable()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .api_config import ApiConfig, save_key, read_key
+from .api_config import ApiConfig, read_config, save_key, read_key
 
 from .errors.data_link_error import *
 
@@ -18,3 +18,4 @@ from .get_point_in_time import get_point_in_time
 
 
 read_key()
+read_config()

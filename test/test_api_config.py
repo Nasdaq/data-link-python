@@ -32,6 +32,11 @@ class ApiConfigTest(TestCase):
         if NASDAQ_DATA_LINK_API_KEY in os.environ:
             del os.environ['NASDAQ_DATA_LINK_API_KEY']
 
+        if NASDAQ_DATA_LINK_BASE_DOMAIN in os.environ:
+            del os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN']
+            # reset the global state in ApiConfig
+            ApiConfig.api_base = '{}data.nasdaq.com/api/v3'.format(ApiConfig.api_protocol)
+
         if os.path.exists(TEST_KEY_FILE):
             os.remove(TEST_KEY_FILE)
 
@@ -132,3 +137,21 @@ class ApiConfigTest(TestCase):
     def test_read_key_from_file_with_multi_newline(self):
         given = "keyfordefaultfile\n\nanotherkey\n"
         self._read_key_from_file_helper(given, TEST_DEFAULT_FILE_CONTENTS)
+
+    def test_read_config_when_environment_variable_set(self):
+        os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN'] = 'api-basein-env'
+        ApiConfig.api_base = None
+        read_config()
+        self.assertEqual(ApiConfig.api_base, 'api-basein-env')
+
+
+    def test_read_config_when_environment_variable_not_set(self):
+        ApiConfig.api_base = 'prevapibase'
+        read_config()
+        self.assertEqual(ApiConfig.api_base, 'prevapibase')
+        
+
+    def test_read_config_when_env_key_empty(self):
+        os.environ['NASDAQ_DATA_LINK_BASE_DOMAIN'] = ''
+        with self.assertRaises(ValueError):
+            read_config()
