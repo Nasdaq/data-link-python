@@ -33,6 +33,16 @@ By default, SSL verification is enabled. To bypass SSL verification (not recomme
 nasdaqdatalink.ApiConfig.verify_ssl = False
 ```
 
+### Environment Variables
+
+You may use environment variables to configure the Data Link SDK to avoid any
+inline boilerplate.
+
+| Env | Description |
+|---|---|
+| NASDAQ_DATA_LINK_API_KEY | The SDK will configure itself to use the given API Key |
+| NASDAQ_DATA_LINK_BASE_DOMAIN | The SDK will configure itself to use the provided domain |
+
 ### Local API Key Environment Variable
 
 If you wish to store your API as an environment variable, you can do so by setting `NASDAQ_DATA_LINK_API_KEY`.  If set, NASDAQ_DATA_LINK_API_KEY will take precedence over the API Key file mentioned below.
