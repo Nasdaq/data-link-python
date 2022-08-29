@@ -1,3 +1,7 @@
+### 1.0.4 - 2022-08-29
+
+* Adds environment variable to allow domain name change configuration
+
 ### 1.0.3 - 2022-08-07
 
 * Fixes an issue with errors not being reported correctly.
