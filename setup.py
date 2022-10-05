@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'nasdaqdatalink'))
 # can only import VERSION successfully after the above line
 # ignore flake8 warning that requires imports to be at the top
 from version import VERSION  # NOQA
+from constants import SUPPORT_EMAIL # NOQA
 
 INSTALL_REQUIRES = [
     'pandas >= 0.14',
@@ -63,9 +64,9 @@ setup(
     long_description=LONG_DESCRIPTION,
     version=VERSION,
     author='Nasdaq Data Link',
-    author_email='connect@data.nasdaq.com',
+    author_email=SUPPORT_EMAIL,
     maintainer='Nasdaq Data Link Development Team',
-    maintainer_email='connect@data.nasdaq.com',
+    maintainer_email=SUPPORT_EMAIL,
     url='https://github.com/Nasdaq/data-link-python',
     license='MIT',
     classifiers=[

@@ -1,6 +1,9 @@
+from ..constants import SUPPORT_EMAIL
+
+
 class DataLinkError(RuntimeError):
-    GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try again. \
-If you continue to have problems, please contact us at connect@data.nasdaq.com.'
+    GENERIC_ERROR_MESSAGE = f'Something went wrong. Please try again. \
+If you continue to have problems, please contact us at %{SUPPORT_EMAIL}'
 
     def __init__(self, data_link_message=None, http_status=None, http_body=None, http_headers=None,
                  data_link_error_code=None, response_data=None):
