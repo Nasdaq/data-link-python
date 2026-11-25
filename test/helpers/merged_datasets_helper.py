@@ -1,7 +1,6 @@
 import re
 import jsondate as json
-import six
-
+impo
 from nasdaqdatalink.model.dataset import Dataset
 from nasdaqdatalink.model.data import Data
 from nasdaqdatalink.model.data_list import DataList
